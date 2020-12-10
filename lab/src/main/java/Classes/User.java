@@ -1,18 +1,18 @@
 package Classes;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
-public class Users {
-    private int id;
+@NoArgsConstructor
+@ToString
+public class User {
+    //private int id;
     private String username;
     private String password;
     private String firstname;
     private String lastname;
-    private String phonename;
+    private String phone;
 
 }

@@ -1,12 +1,12 @@
 package Classes;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class ListsOfTasks {
     private int id;
     private int userId;
