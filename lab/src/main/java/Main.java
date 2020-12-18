@@ -1,6 +1,9 @@
+import BLL.UserLogic;
+import Classes.ListsOfTasks;
 import Classes.Task;
 import Classes.User;
 import DAL.DAO;
+import DAL.ListsOfTaskDAO;
 import DAL.TaskDAO;
 import DAL.UserDAO;
 import Db.DataBase;
@@ -25,7 +28,7 @@ public class Main {
 //                "943237834");
 //
 //
-          DAO dao = new UserDAO();
+//        DAO dao = new UserDAO();
 //        dao.Add(user1);
 //        dao.Remove(1);
 //        User readUser = (User)dao.Read(3);
@@ -44,17 +47,31 @@ public class Main {
 //                true);
 
 
-        dao = new TaskDAO();
+//        dao = new TaskDAO();
 //        dao.Add(task);
 //        //dao.Remove(5);
-        Task readTask = (Task) dao.Read(4);
-        System.out.println(readTask);
+//        Task readTask = (Task) dao.readId(4);
+//        System.out.println(readTask);
 //
 //
 //        readTask.setAlert_time(LocalDateTime.now().withNano(0).withSecond(0));
 //        readTask.setName("Set_task");
 //        dao.Update(readTask);
 
+
+
+        //dao = new ListsOfTaskDAO();
+        //ListsOfTasks listsOfTasks = new ListsOfTasks(1, 3, "list1");
+        //dao.add(listsOfTasks);
+
+        //ListsOfTasks a = (ListsOfTasks) dao.readId(3);
+        //a.setName("task0");
+        //a.setUserId(5);
+        //dao.update(a);
+        //dao.remove(a);
+
+        UserLogic userLogic = new UserLogic();
+        userLogic.signIn("wasd", "wasd1234");
     }
 
 }

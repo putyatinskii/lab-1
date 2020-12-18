@@ -18,7 +18,7 @@ public class TaskDAO implements DAO<Task> {
     static final String PATH = "lab/src/main/resources/log4j.properties";
 
     @Override
-    public void Add(Task task) {
+    public void add(Task task) {
         PropertyConfigurator.configure(PATH);
         try(Connection con = DataBase.connectDB()) {
             LOGGER.info("Connect with DataBase was successful");
@@ -50,11 +50,11 @@ public class TaskDAO implements DAO<Task> {
     }
 
     @Override
-    public void Remove(int id) {
+    public void remove(Task task) {
         try(Connection con = DataBase.connectDB()) {
             LOGGER.info("Connect with DataBase was successful");
             Statement statement = con.createStatement();
-            String sqlCommand = "DELETE FROM \"Tasks\" WHERE id = " + id;
+            String sqlCommand = "DELETE FROM \"Tasks\" WHERE id = " + task.getId();
             statement.executeUpdate(sqlCommand);
             LOGGER.info("Delete element from DataBase was successful");
         } catch (SQLException throwables) {
@@ -65,7 +65,7 @@ public class TaskDAO implements DAO<Task> {
     }
 
     @Override
-    public void Update(Task task) {
+    public void update(Task task) {
         try(Connection con = DataBase.connectDB()) {
             LOGGER.info("Connect with DataBase was successful");
             Statement statement = con.createStatement();
@@ -85,13 +85,40 @@ public class TaskDAO implements DAO<Task> {
     }
 
     @Override
-    public Task Read(int id) {
+    public Task readId(int id) {
         try (Connection con = DataBase.connectDB()) {
             LOGGER.info("Connect with DataBase was successful");
             Statement statement = con.createStatement();
             String sqlCommand = "SELECT * FROM \"Tasks\" WHERE id = " + id;
             ResultSet resultSet = statement.executeQuery(sqlCommand);
             LOGGER.info("Element read was successful");
+            if (resultSet.next()) {
+                return new Task(resultSet.getInt(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getTimestamp(4).toLocalDateTime().withNano(0),
+                        resultSet.getBoolean(5));
+            }
+        } catch (SQLException throwables) {
+            LOGGER.error(throwables.getMessage());
+        } catch (ClassNotFoundException e) {
+            LOGGER.error(e.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public Task read(Task task) {
+        return null;
+    }
+
+    public Task searchByName(String name) {
+        try (Connection con = DataBase.connectDB()) {
+            LOGGER.info("Connect with DataBase was successful");
+            Statement statement = con.createStatement();
+            String sqlCommand = "SELECT * FROM \"Tasks\" WHERE name = " + name;
+            ResultSet resultSet = statement.executeQuery(sqlCommand);
+            LOGGER.info("Element search was successful");
             if (resultSet.next()) {
                 return new Task(resultSet.getInt(1),
                         resultSet.getString(2),

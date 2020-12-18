@@ -3,8 +3,9 @@ package DAL;
 import Classes.User;
 
 public interface DAO<T> {
-    void Add(T t);
-    void Remove(int id);
-    void Update(T t);
-    T Read(int id);
+    void add(T t);
+    void remove(T t);
+    void update(T t);
+    T readId(int id);
+    T read(T t);
 }

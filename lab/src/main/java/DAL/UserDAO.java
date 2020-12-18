@@ -17,7 +17,7 @@ public class UserDAO implements DAO<User> {
     static final String PATH = "lab/src/main/resources/log4j.properties";
 
     @Override
-    public void Add(User user) {
+    public void add(User user) {
 
         PropertyConfigurator.configure(PATH);
         try(Connection con = DataBase.connectDB()) {
@@ -51,11 +51,11 @@ public class UserDAO implements DAO<User> {
     }
 
     @Override
-    public void Remove(int id) {
+    public void remove(User user) {
         try(Connection con = DataBase.connectDB()) {
             LOGGER.info("Connect with DataBase was successful");
             Statement statement = con.createStatement();
-            String sqlCommand = "DELETE FROM \"Users\" WHERE id = " + id;
+            String sqlCommand = "DELETE FROM \"Users\" WHERE id = " + user;
             statement.executeUpdate(sqlCommand);
             LOGGER.info("Delete element from DataBase was successful");
         } catch (SQLException throwables) {
@@ -67,7 +67,7 @@ public class UserDAO implements DAO<User> {
 
 
     @Override
-    public void Update(User user) {
+    public void update(User user) {
         try(Connection con = DataBase.connectDB()) {
             LOGGER.info("Connect with DataBase was successful");
             Statement statement = con.createStatement();
@@ -88,7 +88,7 @@ public class UserDAO implements DAO<User> {
     }
 
     @Override
-    public User Read(int id) {
+    public User readId(int id) {
         try (Connection con = DataBase.connectDB()) {
             LOGGER.info("Connect with DataBase was successful");
             Statement statement = con.createStatement();
@@ -111,4 +111,28 @@ public class UserDAO implements DAO<User> {
         return null;
     }
 
+    @Override
+    public User read(User user) {
+        return null;
+    }
+
+    public int checkUser(String login, String password) {
+        try (Connection con = DataBase.connectDB()) {
+            LOGGER.info("Connect with DataBase was successful");
+            Statement statement = con.createStatement();
+            String sqlCommand = "SELECT id FROM \"Users\" WHERE " +
+                    "username = " + login +
+                    " AND password = " + password;
+            ResultSet resultSet = statement.executeQuery(sqlCommand);
+            LOGGER.info("Element read was successful");
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
 }
