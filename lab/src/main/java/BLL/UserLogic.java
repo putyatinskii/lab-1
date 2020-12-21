@@ -13,7 +13,7 @@ public class UserLogic {
 
     UserDAO userDAO = new UserDAO();
 
-    public void signIn(String username, String password) {
+    public int trySignIn(String username, String password) {
         String password_sha256hex = DigestUtils.sha256Hex(password);
         int response = userDAO.checkUser(username, password_sha256hex);
         if (response == -1) {
@@ -22,15 +22,37 @@ public class UserLogic {
         else {
             LOGGER.info("authentication was successful");
         }
+        return response;
 
 
     }
 
-    public void signUp(String username, String password, String firstname, String lastname, String phone) {
-        String password_sha256hex;
-        if (password.length() <= 20) {
-            password_sha256hex = DigestUtils.sha256Hex(password);
+    public int trySignUp(String username, String password, String firstname, String lastname, String phone) {
+        User user = new User();
+        if (user.getUsername() == "") {
+            user.setUsername(username);
         }
+        if (user.getPassword() == "") {
+            user.setPassword(DigestUtils.sha256Hex(password));
+        }
+        if (user.getFirstname() == "") {
+            user.setFirstname(firstname);
+        }
+        if (user.getLastname() == "") {
+            user.setLastname(lastname);
+        }
+        if (user.getPhone() == "") {
+            user.setPhone(phone);
+        }
+
+        if (user.getUsername() != "" && user.getPassword() != "" && user.getFirstname() != ""
+                && user.getFirstname() != "" && user.getPhone() != "") {
+            userDAO.add(user);
+            if (user.getId() == -1)
+                username = "";
+            user.setUsername(username);
+        }
+        return user.getId();
 
     }
 

@@ -55,7 +55,7 @@ public class UserDAO implements DAO<User> {
         try(Connection con = DataBase.connectDB()) {
             LOGGER.info("Connect with DataBase was successful");
             Statement statement = con.createStatement();
-            String sqlCommand = "DELETE FROM \"Users\" WHERE id = " + user;
+            String sqlCommand = "DELETE FROM \"Users\" WHERE id = " + user.getId();
             statement.executeUpdate(sqlCommand);
             LOGGER.info("Delete element from DataBase was successful");
         } catch (SQLException throwables) {
@@ -118,20 +118,18 @@ public class UserDAO implements DAO<User> {
 
     public int checkUser(String login, String password) {
         try (Connection con = DataBase.connectDB()) {
-            LOGGER.info("Connect with DataBase was successful");
             Statement statement = con.createStatement();
             String sqlCommand = "SELECT id FROM \"Users\" WHERE " +
-                    "username = " + login +
-                    " AND password = " + password;
+                    "username = '" + login +
+                    "' AND password = '" + password + "'";
             ResultSet resultSet = statement.executeQuery(sqlCommand);
-            LOGGER.info("Element read was successful");
             if (resultSet.next()) {
                 return resultSet.getInt(1);
             }
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            LOGGER.error(throwables.getMessage());
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
         return -1;
     }

@@ -7,6 +7,8 @@ import DAL.ListsOfTaskDAO;
 import DAL.TaskDAO;
 import DAL.UserDAO;
 import Db.DataBase;
+import View.LoginWindow;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
@@ -16,21 +18,22 @@ public class Main {
 
     public static void main(String[] args) {
 
+        LoginWindow loginWindow = new LoginWindow();
+        loginWindow.SignInOrSignUp();
 //        User user = new User("wasd",
 //                "qwerty",
 //                "Ivan",
 //                "Ivanov",
 //                "12345678");
 //        User user1 = new User("Roflan",
-//                "qwertydsa",
+//                DigestUtils.sha256Hex("qwertydsa"),
 //                "Petr",
 //                "Ivanov",
 //                "943237834");
 //
-//
+
 //        DAO dao = new UserDAO();
-//        dao.Add(user1);
-//        dao.Remove(1);
+//        dao.add(user1);
 //        User readUser = (User)dao.Read(3);
 //        System.out.println(readUser);
 //
@@ -69,9 +72,6 @@ public class Main {
         //a.setUserId(5);
         //dao.update(a);
         //dao.remove(a);
-
-        UserLogic userLogic = new UserLogic();
-        userLogic.signIn("wasd", "wasd1234");
     }
 
 }
