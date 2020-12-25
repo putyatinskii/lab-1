@@ -1,8 +1,7 @@
-package DAL;
+package data_access_layer;
 
-import Classes.Task;
-import Classes.User;
-import Db.DataBase;
+import classes.User;
+import database_connection.DataBase;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
@@ -12,49 +11,60 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class TaskDAO implements DAO<Task> {
+public class UserDAO implements DAO<User> {
 
-    static final Logger LOGGER = Logger.getLogger(TaskDAO.class);
+    static final Logger LOGGER = Logger.getLogger(UserDAO.class);
     static final String PATH = "lab/src/main/resources/log4j.properties";
 
     @Override
-    public void add(Task task) {
+    public void add(User user) {
+
         PropertyConfigurator.configure(PATH);
         try(Connection con = DataBase.connectDB()) {
-            LOGGER.info("Connect with DataBase was successful");
             Statement statement = con.createStatement();
-            String sqlCommand = "INSERT INTO \"Tasks\" " +
+            String sqlCommand = "INSERT INTO \"Users\" " +
                     "VALUES (DEFAULT, " +
-                    "'" + task.getName() + "', " +
-                    "'" + task.getDescription() + "', " +
-                    "'" + task.getAlert_time() + "', " +
-                    "'" + task.getAlert_received() + "')" +
+                    "'" + user.getUsername() + "', " +
+                    "'" + user.getPassword() + "', " +
+                    "'" + user.getFirstname() + "', " +
+                    "'" + user.getLastname() + "', " +
+                    "'" + user.getPhone() + "')" +
                     " RETURNING id";
-            ResultSet resultSet = statement.executeQuery(sqlCommand);
-            LOGGER.info("Insert new element in DataBase was successful");
-            if (resultSet.next()) {
-                Field field = task.getClass().getDeclaredField("id");
+            ResultSet checkUser = statement.executeQuery("SELECT COUNT(username) AS cnt FROM \"Users\" " +
+                    "WHERE username = '" + user.getUsername() + "'");
+            if (checkUser.next())
+                if (checkUser.getInt("cnt") == 0) {
+                ResultSet resultSet = statement.executeQuery(sqlCommand);
+                if (resultSet.next()) {
+                    Field field = user.getClass().getDeclaredField("id");
+                    field.setAccessible(true);
+                    field.set(user, resultSet.getInt(1));
+                    field.setAccessible(false);
+                }
+                LOGGER.info("Insert new element in DataBase was successful");
+            }
+            else {
+                Field field = user.getClass().getDeclaredField("username");
                 field.setAccessible(true);
-                field.set(task, resultSet.getInt(1));
+                field.set(user, "");
                 field.setAccessible(false);
             }
         } catch (SQLException throwables) {
             LOGGER.error(throwables.getMessage());
         } catch (ClassNotFoundException e) {
             LOGGER.error(e.getMessage());
-        } catch (IllegalAccessException e) {
-            LOGGER.error(e.getMessage());
         } catch (NoSuchFieldException e) {
+            LOGGER.error(e.getMessage());
+        } catch (IllegalAccessException e) {
             LOGGER.error(e.getMessage());
         }
     }
 
     @Override
-    public void remove(Task task) {
+    public void remove(User user) {
         try(Connection con = DataBase.connectDB()) {
-            LOGGER.info("Connect with DataBase was successful");
             Statement statement = con.createStatement();
-            String sqlCommand = "DELETE FROM \"Tasks\" WHERE id = " + task.getId();
+            String sqlCommand = "DELETE FROM \"Users\" WHERE id = " + user.getId();
             statement.executeUpdate(sqlCommand);
             LOGGER.info("Delete element from DataBase was successful");
         } catch (SQLException throwables) {
@@ -64,17 +74,18 @@ public class TaskDAO implements DAO<Task> {
         }
     }
 
+
     @Override
-    public void update(Task task) {
+    public void update(User user) {
         try(Connection con = DataBase.connectDB()) {
-            LOGGER.info("Connect with DataBase was successful");
             Statement statement = con.createStatement();
-            String sqlCommand = "UPDATE \"Tasks\" " +
-                    "SET name = '" + task.getName() + "', "
-                    +"description = '" + task.getDescription() + "', "
-                    + "alert_time = '" + task.getAlert_time() + "', "
-                    + "alert_received = '" + task.getAlert_received() + "'"
-                    + " WHERE id = " + task.getId();
+            String sqlCommand = "UPDATE \"Users\" " +
+                    "SET username = '" + user.getUsername() + "', "
+                    +"password = '" + user.getPassword() + "', "
+                    + "firstname = '" + user.getFirstname() + "', "
+                    + "lastname = '" + user.getLastname() + "', "
+                    + "phone = '" + user.getPhone() + "'"
+                    + " WHERE id = " + user.getId();
             statement.executeUpdate(sqlCommand);
             LOGGER.info("Modification current element was successful");
         } catch (SQLException throwables) {
@@ -85,20 +96,20 @@ public class TaskDAO implements DAO<Task> {
     }
 
     @Override
-    public Task readId(int id) {
+    public User readId(int id) {
         try (Connection con = DataBase.connectDB()) {
-            LOGGER.info("Connect with DataBase was successful");
             Statement statement = con.createStatement();
-            String sqlCommand = "SELECT * FROM \"Tasks\" WHERE id = " + id;
+            String sqlCommand = "SELECT * FROM \"Users\" WHERE id = " + id;
             ResultSet resultSet = statement.executeQuery(sqlCommand);
-            LOGGER.info("Element read was successful");
             if (resultSet.next()) {
-                return new Task(resultSet.getInt(1),
+                return new User(resultSet.getInt(1),
                         resultSet.getString(2),
                         resultSet.getString(3),
-                        resultSet.getTimestamp(4).toLocalDateTime().withNano(0),
-                        resultSet.getBoolean(5));
+                        resultSet.getString(4),
+                        resultSet.getString(5),
+                        resultSet.getString(6));
             }
+            LOGGER.info("Element read was successful");
         } catch (SQLException throwables) {
             LOGGER.error(throwables.getMessage());
         } catch (ClassNotFoundException e) {
@@ -108,29 +119,25 @@ public class TaskDAO implements DAO<Task> {
     }
 
     @Override
-    public Task read(Task task) {
+    public User read(User user) {
         return null;
     }
 
-    public Task searchByName(String name) {
+    public int checkUser(String login, String password) {
         try (Connection con = DataBase.connectDB()) {
-            LOGGER.info("Connect with DataBase was successful");
             Statement statement = con.createStatement();
-            String sqlCommand = "SELECT * FROM \"Tasks\" WHERE name = " + name;
+            String sqlCommand = "SELECT id FROM \"Users\" WHERE " +
+                    "username = '" + login +
+                    "' AND password = '" + password + "'";
             ResultSet resultSet = statement.executeQuery(sqlCommand);
-            LOGGER.info("Element search was successful");
             if (resultSet.next()) {
-                return new Task(resultSet.getInt(1),
-                        resultSet.getString(2),
-                        resultSet.getString(3),
-                        resultSet.getTimestamp(4).toLocalDateTime().withNano(0),
-                        resultSet.getBoolean(5));
+                return resultSet.getInt(1);
             }
         } catch (SQLException throwables) {
             LOGGER.error(throwables.getMessage());
         } catch (ClassNotFoundException e) {
             LOGGER.error(e.getMessage());
         }
-        return null;
+        return -1;
     }
 }

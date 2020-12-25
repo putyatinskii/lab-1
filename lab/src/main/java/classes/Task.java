@@ -1,15 +1,13 @@
-package Classes;
+package classes;
 
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.Calendar;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class Task {
     @Setter(value = AccessLevel.NONE)
     private int id;
@@ -23,5 +21,15 @@ public class Task {
         this.description = description;
         this.alert_time = alert_time;
         this.alert_received = alert_received;
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", alert_time=" + alert_time +
+                ", alert_received=" + alert_received +
+                '}';
     }
 }

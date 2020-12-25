@@ -1,8 +1,7 @@
-package BLL;
+package business_logic_layer;
 
-import Classes.User;
-import DAL.TaskDAO;
-import DAL.UserDAO;
+import classes.User;
+import data_access_layer.UserDAO;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.Logger;
 
@@ -27,33 +26,26 @@ public class UserLogic {
 
     }
 
-    public int trySignUp(String username, String password, String firstname, String lastname, String phone) {
-        User user = new User();
-        if (user.getUsername() == "") {
-            user.setUsername(username);
-        }
-        if (user.getPassword() == "") {
-            user.setPassword(DigestUtils.sha256Hex(password));
-        }
-        if (user.getFirstname() == "") {
-            user.setFirstname(firstname);
-        }
-        if (user.getLastname() == "") {
-            user.setLastname(lastname);
-        }
-        if (user.getPhone() == "") {
-            user.setPhone(phone);
-        }
-
+    public int trySignUp(User user) {
         if (user.getUsername() != "" && user.getPassword() != "" && user.getFirstname() != ""
                 && user.getFirstname() != "" && user.getPhone() != "") {
             userDAO.add(user);
             if (user.getId() == -1)
-                username = "";
-            user.setUsername(username);
+            user.setUsername("");
         }
         return user.getId();
 
     }
 
+    public User getUser(int id) {
+        return userDAO.readId(id);
+    }
+
+    public void removeUser(User user) {
+        userDAO.remove(user);
+    }
+
+    public void updateUser(User user) {
+        userDAO.update(user);
+    }
 }

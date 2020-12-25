@@ -1,4 +1,4 @@
-package Classes;
+package classes;
 
 import lombok.*;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -27,17 +27,11 @@ public class User {
         if (username.length() <= 20 && username.length() >= 5) {
             this.username = username;
         }
-        else {
-            username = "";
-        }
     }
 
     public void setPassword(String password) {
         if (password.length() <= 20 && password.length() >= 5) {
-            this.password = password;
-        }
-        else {
-            password = "";
+            this.password = DigestUtils.sha256Hex(password);
         }
     }
 
@@ -45,26 +39,17 @@ public class User {
         if (firstname.length() <= 20 && firstname.length() >= 4) {
             this.firstname = firstname;
         }
-        else {
-            firstname = "";
-        }
     }
 
     public void setLastname(String lastname) {
-        if (lastname.length() <= 20 && firstname.length() >= 4) {
+        if (lastname.length() <= 20 && lastname.length() >= 4) {
             this.lastname = lastname;
-        }
-        else {
-            lastname = "";
         }
     }
 
     public void setPhone(String phone) {
-        if (phone.length() == 12) {
-            this.phone = phone;
-        }
-        else {
-            phone = "";
+        if (phone.length() == 10) {
+            this.phone = "+7" + phone;
         }
     }
 }

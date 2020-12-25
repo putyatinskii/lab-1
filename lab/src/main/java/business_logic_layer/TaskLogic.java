@@ -1,9 +1,10 @@
-package BLL;
+package business_logic_layer;
 
-import Classes.Task;
-import DAL.TaskDAO;
-import DAL.UserDAO;
+import classes.Task;
+import data_access_layer.TaskDAO;
 import org.apache.log4j.Logger;
+
+import java.util.ArrayList;
 
 public class TaskLogic {
 
@@ -12,14 +13,8 @@ public class TaskLogic {
 
     TaskDAO taskDAO = new TaskDAO();
 
-    public void searchTaskByName(String name) {
-        Task task = taskDAO.searchByName(name);
-        if (task != null) {
-            
-        }
-        else {
-
-        }
+    public ArrayList<Task> searchTaskByName(String name) {
+        return taskDAO.searchByName(name);
     }
 
     public void searchTaskByDescription(String description) {

@@ -1,6 +1,4 @@
-package DAL;
-
-import Classes.User;
+package data_access_layer;
 
 public interface DAO<T> {
     void add(T t);

@@ -1,15 +1,19 @@
-package View;
+package view_layer;
 
-import BLL.UserLogic;
+import business_logic_layer.UserLogic;
+import classes.User;
+import controller.Controller;
 
 import java.util.Scanner;
 
 public class LoginWindow {
 
-    UserLogic userLogic = new UserLogic();
+    Controller controller = new Controller();
+    User user = new User();
+    Menu menu = new Menu();
     int id = -1;
 
-    public void SignInOrSignUp() {
+    public void signInOrSignUp() {
         try(Scanner scanner = new Scanner(System.in)) {
             System.out.println("Press 1 for sign up");
             System.out.println("Press 2 for sign in");
@@ -43,51 +47,42 @@ public class LoginWindow {
                 login = sc.nextLine();
                 System.out.print("Enter password: ");
                 password = sc.nextLine();
-                id = userLogic.trySignIn(login, password);
+                id = controller.trySignIn(login, password);
                 if (id == -1)
                     System.out.println("incorrect login or password. Try again");
             } while (id == -1);
+            menu.showMenu(id);
         }
-        Menu menu = new Menu();
-        menu.ShowMenu(id);
     }
 
     private void signUp() {
-        String login = "";
-        String password = "";
-        String firstname = "";
-        String lastname = "";
-        String phone = "";
-        int id = -1;
-        UserLogic userLogic = new UserLogic();
         try(Scanner sc = new Scanner(System.in)) {
             do {
-                if (login == "") {
+                if (user.getUsername() == "") {
                     System.out.print("Enter login (no more than 20 characters): ");
-                    login = sc.nextLine();
+                    user.setUsername(sc.nextLine());
                 }
-                if (password == "") {
+                if (user.getPassword() == "") {
                     System.out.print("Enter password: ");
-                    password = sc.nextLine();
+                    user.setPassword(sc.nextLine());
                 }
-                if (firstname == "") {
+                if (user.getFirstname() == "") {
                     System.out.print("Enter firstname (no more than 20 characters): ");
-                    firstname = sc.nextLine();
+                    user.setFirstname(sc.nextLine());
                 }
-                if (lastname == "") {
+                if (user.getLastname() == "") {
                     System.out.print("Enter lastname (no more than 20 characters): ");
-                    lastname = sc.nextLine();
+                    user.setLastname(sc.nextLine());
                 }
-                if (phone == "") {
-                    System.out.print("Enter phone (12 characters): ");
-                    phone = sc.nextLine();
+                if (user.getPhone() == "") {
+                    System.out.print("Enter phone (10 characters without +7): ");
+                    user.setPhone(sc.nextLine());
                 }
-                id = userLogic.trySignUp(login, password, firstname, lastname, phone);
+                id = controller.trySignUp(user);
                 if (id == -1)
                     System.out.println("invalid data format");
             } while (id == -1);
+            menu.showMenu(id);
         }
-        Menu menu = new Menu();
-        menu.ShowMenu(id);
     }
 }

@@ -1,25 +1,14 @@
-import BLL.UserLogic;
-import Classes.ListsOfTasks;
-import Classes.Task;
-import Classes.User;
-import DAL.DAO;
-import DAL.ListsOfTaskDAO;
-import DAL.TaskDAO;
-import DAL.UserDAO;
-import Db.DataBase;
-import View.LoginWindow;
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
-
-import java.time.LocalDateTime;
+import view_layer.LoginWindow;
+import view_layer.Menu;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        LoginWindow loginWindow = new LoginWindow();
-        loginWindow.SignInOrSignUp();
+       LoginWindow loginWindow = new LoginWindow();
+       loginWindow.signInOrSignUp();
+//        Menu menu = new Menu();
+//        menu.showMenu(1);
 //        User user = new User("wasd",
 //                "qwerty",
 //                "Ivan",

@@ -1,8 +1,7 @@
-package DAL;
+package data_access_layer;
 
-import Classes.ListsOfTasks;
-import Classes.User;
-import Db.DataBase;
+import classes.ListsOfTasks;
+import database_connection.DataBase;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
