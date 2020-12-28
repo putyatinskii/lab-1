@@ -1,17 +1,19 @@
 package controller;
 
+import business_logic_layer.ListOfTaskLogic;
 import business_logic_layer.TaskLogic;
 import business_logic_layer.UserLogic;
+import classes.ListOfTasks;
 import classes.Task;
 import classes.User;
-import data_access_layer.UserDAO;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.ArrayList;
 
-public class Controller {
+public class ControllerUser {
     UserLogic userLogic = new UserLogic();
     TaskLogic taskLogic = new TaskLogic();
+    ListOfTaskLogic listOfTaskLogic = new ListOfTaskLogic();
 
     public int trySignUp(User user) {
         return userLogic.trySignUp(user);
@@ -19,10 +21,6 @@ public class Controller {
 
     public int trySignIn(String username, String password) {
         return userLogic.trySignIn(username, password);
-    }
-
-    public ArrayList<Task> searchTaskByName(String name) {
-        return taskLogic.searchTaskByName(name);
     }
 
     public User getUserById(int id) {
@@ -42,4 +40,6 @@ public class Controller {
     public void tryUpdateThisUser(User user) {
         userLogic.updateUser(user);
     }
+
+
 }

@@ -7,14 +7,14 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ListsOfTasks {
+public class ListOfTasks {
     @Setter(value = AccessLevel.NONE)
     private int id;
     private int userId;
     private int taskId;
     private String name;
 
-    public ListsOfTasks(int userId, int taskId, String name) {
+    public ListOfTasks(int userId, int taskId, String name) {
         this.userId = userId;
         this.taskId = taskId;
         this.name = name;

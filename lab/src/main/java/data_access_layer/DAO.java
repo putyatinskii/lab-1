@@ -5,5 +5,4 @@ public interface DAO<T> {
     void remove(T t);
     void update(T t);
     T readId(int id);
-    T read(T t);
 }

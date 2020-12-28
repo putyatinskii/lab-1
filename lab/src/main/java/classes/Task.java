@@ -23,13 +23,14 @@ public class Task {
         this.alert_received = alert_received;
     }
 
+
+
     @Override
     public String toString() {
         return "Task{" +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", alert_time=" + alert_time +
-                ", alert_received=" + alert_received +
                 '}';
     }
 }

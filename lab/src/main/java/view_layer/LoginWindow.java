@@ -1,14 +1,13 @@
 package view_layer;
 
-import business_logic_layer.UserLogic;
 import classes.User;
-import controller.Controller;
+import controller.ControllerUser;
 
 import java.util.Scanner;
 
 public class LoginWindow {
 
-    Controller controller = new Controller();
+    ControllerUser controllerUser = new ControllerUser();
     User user = new User();
     Menu menu = new Menu();
     int id = -1;
@@ -47,7 +46,7 @@ public class LoginWindow {
                 login = sc.nextLine();
                 System.out.print("Enter password: ");
                 password = sc.nextLine();
-                id = controller.trySignIn(login, password);
+                id = controllerUser.trySignIn(login, password);
                 if (id == -1)
                     System.out.println("incorrect login or password. Try again");
             } while (id == -1);
@@ -78,7 +77,7 @@ public class LoginWindow {
                     System.out.print("Enter phone (10 characters without +7): ");
                     user.setPhone(sc.nextLine());
                 }
-                id = controller.trySignUp(user);
+                id = controllerUser.trySignUp(user);
                 if (id == -1)
                     System.out.println("invalid data format");
             } while (id == -1);

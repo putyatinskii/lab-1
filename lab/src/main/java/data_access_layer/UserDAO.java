@@ -118,11 +118,6 @@ public class UserDAO implements DAO<User> {
         return null;
     }
 
-    @Override
-    public User read(User user) {
-        return null;
-    }
-
     public int checkUser(String login, String password) {
         try (Connection con = DataBase.connectDB()) {
             Statement statement = con.createStatement();

@@ -1,7 +1,7 @@
 package view_layer;
 
 import classes.User;
-import controller.Controller;
+import controller.ControllerUser;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.Scanner;
@@ -9,9 +9,10 @@ import java.util.Scanner;
 public class Menu {
 
     SearchTasks searchTasks = new SearchTasks();
-    Controller controller = new Controller();
-
+    ControllerUser controllerUser = new ControllerUser();
+    int id;
     public void showMenu(int id) {
+        this.id = id;
         try(Scanner sc = new Scanner(System.in)) {
             System.out.println("Press 1 for edit task");
             System.out.println("Press 2 for edit list of tasks");
@@ -24,18 +25,19 @@ public class Menu {
                 res = sc.nextInt();
                 switch (res) {
                     case 1:
+
                         break;
                     case 2:
 
                         break;
                     case 3:
-                        searchTasks.searchTask();
+                        searchTasks.searchTask(id);
                         break;
                     case 4:
-                        updateThisUser(id);
+                        updateThisUser();
                         break;
                     case 5:
-                        res = removeThisUser(id);;
+                        res = removeThisUser();;
                         break;
                     case 0:
                         res = -1;
@@ -49,14 +51,14 @@ public class Menu {
         }
     }
 
-    private void updateThisUser(int id) {
+    private void updateThisUser() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Press 1 for change password");
         System.out.println("Press 2 for change firstname");
         System.out.println("Press 3 for change lastname");
         System.out.println("Press 4 for change phone");
         System.out.println("Press 0 for exit");
-        User user = controller.getUserById(id);
+        User user = controllerUser.getUserById(id);
         int res;
         do {
             res = sc.nextInt();
@@ -95,15 +97,15 @@ public class Menu {
                     break;
             }
         } while (res != -1);
-        controller.tryUpdateThisUser(user);
+        controllerUser.tryUpdateThisUser(user);
         System.out.println("Update was successful");
     }
 
-    private int removeThisUser(int id) {
+    private int removeThisUser() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter password: ");
         String password = sc.nextLine();
-        if (controller.tryRemoveUser(id, password)) {
+        if (controllerUser.tryRemoveUser(id, password)) {
             System.out.println("Remove user was successful");
             return -1;
         }

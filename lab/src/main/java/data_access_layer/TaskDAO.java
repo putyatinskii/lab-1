@@ -104,11 +104,6 @@ public class TaskDAO implements DAO<Task> {
         return null;
     }
 
-    @Override
-    public Task read(Task task) {
-        return null;
-    }
-
     public ArrayList<Task> searchByName(String name) {
         try (Connection con = DataBase.connectDB()) {
             ArrayList<Task> listOfTasks= new ArrayList<>();
