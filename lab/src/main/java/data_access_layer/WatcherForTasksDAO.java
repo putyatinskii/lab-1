@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class WatcherForTasksDAO {
 
-    static final Logger LOGGER = Logger.getLogger(TaskDAO.class);
+    static final Logger LOGGER = Logger.getLogger(WatcherForTasksDAO.class);
     static final String PATH = "lab/src/main/resources/log4j.properties";
 
     public void followTask(int idTask, int idUser) {
@@ -33,7 +33,7 @@ public class WatcherForTasksDAO {
     public void deleteByUserId(int idUser) {
         try (Connection con = DataBase.connectDB()) {
             Statement statement = con.createStatement();
-            String sqlCommand = "DELETE INTO \"WatcherForTasks\" " +
+            String sqlCommand = "DELETE FROM \"WatcherForTasks\" " +
                     "WHERE userid = " + idUser;
             statement.executeUpdate(sqlCommand);
         } catch (SQLException throwables) {
@@ -46,7 +46,7 @@ public class WatcherForTasksDAO {
     public void deleteByTaskId(int idTask) {
         try (Connection con = DataBase.connectDB()) {
             Statement statement = con.createStatement();
-            String sqlCommand = "DELETE INTO \"WatcherForTasks\" " +
+            String sqlCommand = "DELETE FROM \"WatcherForTasks\" " +
                     "WHERE taskid = " + idTask;
             statement.executeUpdate(sqlCommand);
         } catch (SQLException throwables) {
@@ -73,5 +73,19 @@ public class WatcherForTasksDAO {
             LOGGER.error(e.getMessage());
         }
         return null;
+    }
+
+    public void unfollowTask(int idTask, int idUser) {
+        try (Connection con = DataBase.connectDB()) {
+            Statement statement = con.createStatement();
+            String sqlCommand = "DELETE FROM \"WatcherForTasks\" " +
+                    "WHERE userid = " + idUser +
+                    " AND taskid = " + idTask;
+            statement.executeUpdate(sqlCommand);
+        } catch (SQLException throwables) {
+            LOGGER.error(throwables.getMessage());
+        } catch (ClassNotFoundException e) {
+            LOGGER.error(e.getMessage());
+        }
     }
 }

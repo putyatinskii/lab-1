@@ -1,3 +1,4 @@
+import classes.ListOfTasks;
 import view_layer.LoginWindow;
 import view_layer.Menu;
 
@@ -7,6 +8,18 @@ public class Main {
 
        LoginWindow loginWindow = new LoginWindow();
        loginWindow.signInOrSignUp();
+
+//        ListsDAO listsDAO = new ListsDAO();
+//        ListOfTasks listOfTasks = new ListOfTasks("qwer");
+//        listsDAO.add(listOfTasks);
+//        listOfTasks.setName("trewq");
+//        listsDAO.update(listOfTasks);
+//        ListOfTasks listOfTasks1 = listsDAO.readId(2);
+//        listsDAO.remove(listOfTasks1);
+
+
+
+
 //        Menu menu = new Menu();
 //        menu.showMenu(1);
 //        User user = new User("wasd",

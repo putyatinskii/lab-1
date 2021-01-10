@@ -5,6 +5,7 @@ import data_access_layer.TaskDAO;
 import data_access_layer.WatcherForTasksDAO;
 import org.apache.log4j.Logger;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class WatcherForTaskLogic {
@@ -33,5 +34,22 @@ public class WatcherForTaskLogic {
             listOfTasks.add(taskDAO.readId(id));
         }
         return listOfTasks;
+    }
+
+    public ArrayList<Task> FindOverdueTasks(int idUser) {
+        ArrayList<Task> tasks = getTasks(idUser);
+        ArrayList<Task> resTasks = new ArrayList<>();
+        for (Task task : tasks) {
+            if (LocalDateTime.now().isAfter(task.getAlert_time()) && task.getAlert_received() == true) {
+                resTasks.add(task);
+            }
+        }
+        return resTasks;
+    }
+
+    public void unfollowTask(ArrayList<Task> tasks, int idUser) {
+        for (Task task : tasks) {
+            watcherForTasksDAO.unfollowTask(task.getId(), idUser);
+        }
     }
 }

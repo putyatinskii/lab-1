@@ -1,8 +1,9 @@
 package controller;
 
-import business_logic_layer.ListOfTaskLogic;
 import business_logic_layer.TaskLogic;
+import business_logic_layer.TasksInListsLogic;
 import business_logic_layer.UserLogic;
+import business_logic_layer.WatcherForTaskLogic;
 import classes.ListOfTasks;
 import classes.Task;
 import classes.User;
@@ -12,8 +13,8 @@ import java.util.ArrayList;
 
 public class ControllerUser {
     UserLogic userLogic = new UserLogic();
-    TaskLogic taskLogic = new TaskLogic();
-    ListOfTaskLogic listOfTaskLogic = new ListOfTaskLogic();
+    WatcherForTaskLogic watcherForTaskLogic = new WatcherForTaskLogic();
+    TasksInListsLogic tasksInListsLogic = new TasksInListsLogic();
 
     public int trySignUp(User user) {
         return userLogic.trySignUp(user);
@@ -30,6 +31,8 @@ public class ControllerUser {
     public Boolean tryRemoveUser(int id, String password) {
         User user = userLogic.getUser(id);
         if (user.getPassword().equals(DigestUtils.sha256Hex(password))) {
+            watcherForTaskLogic.deleteByUserId(id);
+            tasksInListsLogic.deleteByUserId(id);
             userLogic.removeUser(user);
             return true;
         }

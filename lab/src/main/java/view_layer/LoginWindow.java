@@ -14,10 +14,10 @@ public class LoginWindow {
 
     public void signInOrSignUp() {
         try(Scanner scanner = new Scanner(System.in)) {
-            System.out.println("Press 1 for sign up");
-            System.out.println("Press 2 for sign in");
             int res;
             do {
+                System.out.println("Press 1 for sign up");
+                System.out.println("Press 2 for sign in");
                 res = scanner.nextInt();
                 switch (res) {
                     case 1:

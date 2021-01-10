@@ -3,20 +3,24 @@ package classes;
 import lombok.*;
 
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class ListOfTasks {
-    @Setter(value = AccessLevel.NONE)
-    private int id;
-    private int userId;
-    private int taskId;
-    private String name;
+    private int id = -1;
+    private String name = "";
 
-    public ListOfTasks(int userId, int taskId, String name) {
-        this.userId = userId;
-        this.taskId = taskId;
+    public ListOfTasks(String name) {
         this.name = name;
+    }
+
+    public void setName(String name) {
+        if (name.length() <= 30 && name.length() >= 5) {
+            this.name = name;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "NameOfList = '" + name + '\'' + '}';
     }
 }
