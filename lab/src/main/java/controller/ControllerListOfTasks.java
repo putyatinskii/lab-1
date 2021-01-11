@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 public class ControllerListOfTasks {
 
-    ListOfTasksLogic listOfTasksLogic = new ListOfTasksLogic();
-    TasksInListsLogic tasksInListsLogic = new TasksInListsLogic();
+    private ListOfTasksLogic listOfTasksLogic = new ListOfTasksLogic();
+    private TasksInListsLogic tasksInListsLogic = new TasksInListsLogic();
 
     public void addNewList(ListOfTasks listOfTasks) {
         listOfTasksLogic.addNewList(listOfTasks);

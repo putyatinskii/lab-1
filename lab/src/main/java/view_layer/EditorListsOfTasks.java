@@ -14,18 +14,21 @@ public class EditorListsOfTasks {
     private ControllerListOfTasks controllerListOfTasks = new ControllerListOfTasks();
     private ControllerTasksInList controllerTasksInList = new ControllerTasksInList();
     private EditorTasks editorTasks = new EditorTasks();
-    ArrayList<Task> tasks;
-    private int userId;
+    private ArrayList<Task> tasks;
+    private static int userId;
     private int listId;
     private int taskId = -1;
 
-    public void ListsOfTasksMenu(int userId, int listId) {
+    public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public void ListsOfTasksMenu(int listId) {
         this.listId = listId;
         System.out.println("Your tasks: ");
         showTasks();
         Scanner sc = new Scanner(System.in);
-        int res;
+        String res;
         do {
             System.out.println("Press 1 for update this list");
             System.out.println("Press 2 for remove this list");
@@ -36,25 +39,25 @@ public class EditorListsOfTasks {
             System.out.println("Press 7 for remove current task");
             System.out.println("Press 8 for update current task");
             System.out.println("Press 0 for exit");
-            res = sc.nextInt();
+            res = sc.nextLine();
             switch (res) {
-                case 1:
+                case "1":
                     updateList();
                     break;
-                case 2:
+                case "2":
                     removeList();
-                    res = -1;
+                    res = "-1";
                     break;
-                case 3:
+                case "3":
                     showTasks();
                     break;
-                case 4:
+                case "4":
                     selectTask();
                     break;
-                case 5:
+                case "5":
                     addTaskInList();
                     break;
-                case 6:
+                case "6":
                     if (taskId != -1) {
                         removeTaskFromList();
                     }
@@ -62,7 +65,7 @@ public class EditorListsOfTasks {
                         System.out.println("Task not select");
                     }
                     break;
-                case 7:
+                case "7":
                     if (taskId != -1) {
                         editorTasks.setUserId(userId);
                         editorTasks.removeTask(taskId);
@@ -71,7 +74,7 @@ public class EditorListsOfTasks {
                         System.out.println("Task not select");
                     }
                     break;
-                case 8:
+                case "8":
                     if (taskId != -1) {
                         editorTasks.setUserId(userId);
                         editorTasks.updateTask(taskId);
@@ -80,15 +83,15 @@ public class EditorListsOfTasks {
                         System.out.println("Task not select");
                     }
                     break;
-                case 0:
-                    res = -1;
+                case "0":
+                    res = "-1";
                     break;
                 default:
-                    res = -10;
+                    res = "-10";
                     System.out.println("incorrect value. Try again");
                     break;
             }
-        } while (res != -1);
+        } while (res != "-1");
         System.out.println("Return in ListsOfTasksMenu");
     }
 
@@ -117,11 +120,15 @@ public class EditorListsOfTasks {
     }
 
     private void showTasks() {
-        System.out.println("Tasks: ");
         tasks = controllerTasksInList.getTasksOfList(userId, listId);
-        int i = 0;
-        for (Task task : tasks) {
-            System.out.println(++i + ": " + task);
+        if (tasks.size() != 0) {
+            int i = 0;
+            for (Task task : tasks) {
+                System.out.println(++i + ": " + task);
+            }
+        }
+        else {
+            System.out.println("You haven't any tasks");
         }
 
     }
@@ -131,8 +138,13 @@ public class EditorListsOfTasks {
         int num;
         do {
             System.out.print("Enter number of task: ");
-            num = sc.nextInt();
-            --num;
+            try {
+                num = Integer.parseInt(sc.nextLine());
+                --num;
+            }
+            catch (NumberFormatException ex){
+                num = -1;
+            }
             if (num >= 0 && num < tasks.size()) {
                 this.taskId = tasks.get(num).getId();
             } else {
@@ -160,20 +172,19 @@ public class EditorListsOfTasks {
                     taskId = editorTasks.createTask();
                     controllerTasksInList.addTaskOnList(listId, userId, taskId);
                     System.out.println("task was created successfully");
-                    res = "ok";
+                    res = "-1";
                     break;
                 case "2":
-                    editorTasks.setUserId(userId);
                     editorTasks.showMyTasks();
                     this.taskId = editorTasks.selectTask();
                     controllerTasksInList.addTaskOnList(listId, userId, taskId);
-                    res = "ok";
+                    res = "-1";
                     break;
                 default:
                     System.out.println("Incorrect data. Try again");
                     break;
             }
-        } while (res != "ok");
+        } while (res != "-1");
     }
 
 }

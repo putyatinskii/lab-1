@@ -10,7 +10,7 @@ public class UserLogic {
     static final Logger LOGGER = Logger.getLogger(UserLogic.class);
     static final String PATH = "lab/src/main/resources/log4j.properties";
 
-    UserDAO userDAO = new UserDAO();
+    private UserDAO userDAO = new UserDAO();
 
     public int trySignIn(String username, String password) {
         String password_sha256hex = DigestUtils.sha256Hex(password);

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class ControllerTasksInList {
 
-    TasksInListsLogic tasksInListsLogic = new TasksInListsLogic();
+    private TasksInListsLogic tasksInListsLogic = new TasksInListsLogic();
 
     public void addTaskOnList(int listId, int userId, int taskId) {
         tasksInListsLogic.addTask(listId, userId, taskId);

@@ -7,33 +7,33 @@ import java.util.Scanner;
 
 public class LoginWindow {
 
-    ControllerUser controllerUser = new ControllerUser();
-    User user = new User();
-    Menu menu = new Menu();
-    int id = -1;
+    private ControllerUser controllerUser = new ControllerUser();
+    private User user = new User();
+    private Menu menu = new Menu();
+    private int id = -1;
 
     public void signInOrSignUp() {
         try(Scanner scanner = new Scanner(System.in)) {
-            int res;
+            String res;
             do {
                 System.out.println("Press 1 for sign up");
                 System.out.println("Press 2 for sign in");
-                res = scanner.nextInt();
+                res = scanner.nextLine();
                 switch (res) {
-                    case 1:
+                    case "1":
                         signUp();
-                        res = -1;
+                        res = "-1";
                         break;
-                    case 2:
+                    case "2":
                         signIn();
-                        res = -1;
+                        res = "-1";
                         break;
                     default:
-                        res = 0;
+                        res = "0";
                         System.out.println("incorrect value. Try again");
                         break;
                 }
-            } while (res != -1);
+            } while (res != "-1");
         }
     }
 

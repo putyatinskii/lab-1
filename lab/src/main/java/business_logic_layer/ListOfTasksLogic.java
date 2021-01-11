@@ -12,7 +12,7 @@ public class ListOfTasksLogic {
     static final Logger LOGGER = Logger.getLogger(UserLogic.class);
     static final String PATH = "lab/src/main/resources/log4j.properties";
 
-    ListOfTasksDAO listOfTasksDAO = new ListOfTasksDAO();
+    private ListOfTasksDAO listOfTasksDAO = new ListOfTasksDAO();
 
     public void addNewList(ListOfTasks listOfTasks) {
         if (listOfTasks.getName() != "") {

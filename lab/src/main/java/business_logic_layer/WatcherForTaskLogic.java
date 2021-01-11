@@ -12,8 +12,8 @@ public class WatcherForTaskLogic {
     static final Logger LOGGER = Logger.getLogger(UserLogic.class);
     static final String PATH = "lab/src/main/resources/log4j.properties";
 
-    WatcherForTasksDAO watcherForTasksDAO = new WatcherForTasksDAO();
-    TaskDAO taskDAO = new TaskDAO();
+    private WatcherForTasksDAO watcherForTasksDAO = new WatcherForTasksDAO();
+    private TaskDAO taskDAO = new TaskDAO();
 
     public void followTask(Task task, int idUser) {
         watcherForTasksDAO.followTask(task.getId(), idUser);

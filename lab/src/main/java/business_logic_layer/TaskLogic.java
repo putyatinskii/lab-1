@@ -13,14 +13,14 @@ public class TaskLogic {
     static final Logger LOGGER = Logger.getLogger(UserLogic.class);
     static final String PATH = "lab/src/main/resources/log4j.properties";
 
-    TaskDAO taskDAO = new TaskDAO();
+    private TaskDAO taskDAO = new TaskDAO();
 
     public ArrayList<Task> searchTaskByName(String name) {
         return taskDAO.searchByName(name);
     }
 
     public ArrayList<Task> searchTaskByDescription(String description) {
-        return null;
+        return taskDAO.searchByDescription(description);
     }
 
     public void add(Task task) {

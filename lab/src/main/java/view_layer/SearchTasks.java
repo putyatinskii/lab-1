@@ -9,43 +9,46 @@ import java.util.Scanner;
 public class SearchTasks {
 
     private ControllerTask controllerTask = new ControllerTask();
-    private int userId;
+    private static int userId;
     private ArrayList<Task> listOfTasks;
 
-    public void searchTask(int id) {
-        this.userId = id;
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public void searchTaskMenu() {
         Scanner sc = new Scanner(System.in);
-        int res = 0;
+        String res = "0";
         do {
             System.out.println("Press 1 for search task by name");
             System.out.println("Press 2 for search task by description");
             System.out.println("Press 3 for show observable tasks");
             System.out.println("Press 0 for exit");
             if (sc.hasNextInt()) {
-                res = sc.nextInt();
+                res = sc.nextLine();
             }
             switch (res) {
-                case 1:
+                case "1":
                     searchByName();
-                    res = -1;
+                    res = "-1";
                     break;
-                case 2:
+                case "2":
                     searchByDescription();
-                    res = -1;
+                    res = "-1";
                     break;
-                case 3:
+                case "3":
                     showWatcherTasks();
-                    res = -1;
+                    res = "-1";
                     break;
-                case 0:
-                    res = -1;
+                case "0":
+                    res = "-1";
                     break;
                 default:
-                    res = -10;
+                    res = "-10";
                     System.out.println("incorrect value. Try again");
                     break;
             }
-        } while (res != -1);
+        } while (res != "-1");
         System.out.println("Return in MainMenu");
 
     }
@@ -72,6 +75,22 @@ public class SearchTasks {
 
     private void searchByDescription() {
         Scanner sc = new Scanner(System.in);
+        System.out.print("Enter name of description: ");
+        String description = sc.nextLine();
+        listOfTasks = new ArrayList<>(controllerTask.searchTaskByDescription(description));
+        int i = 0;
+        if (listOfTasks.size() != 0) {
+            for (Task listOfTask : listOfTasks) {
+                System.out.println(++i + ": " + listOfTask);
+            }
+            System.out.println("Enter 'y' for select task");
+            String flag = sc.nextLine();
+            if ("y".equals(flag)) {
+                followTasks();
+            }
+        } else {
+            System.out.println("Tasks with this description no exist");
+        }
     }
 
     private void followTasks() {
@@ -79,8 +98,13 @@ public class SearchTasks {
         int num;
         do {
             System.out.print("Enter number of task: ");
-            num = sc.nextInt();
-            --num;
+            try {
+                num = Integer.parseInt(sc.nextLine());
+                --num;
+            }
+            catch (NumberFormatException ex){
+                num = -1;
+            }
             if (num >= 0 && num < listOfTasks.size()) {
                 controllerTask.followTask(listOfTasks.get(num), userId);
             } else {
@@ -93,8 +117,9 @@ public class SearchTasks {
     private void showWatcherTasks() {
         ArrayList<Task> taskArrayList = controllerTask.getWatcherTasks(userId);
         if (taskArrayList.size() != 0) {
+            int i = 0;
             for (Task task : taskArrayList) {
-                System.out.println("1: " + task);
+                System.out.println(++i + ": " + task);
             }
         }
         else {
@@ -102,10 +127,9 @@ public class SearchTasks {
         }
     }
 
-    public void getOverdueObservableTasks(int id) {
-        this.userId = id;
+    public void getOverdueObservableTasks() {
         int i = 0;
-        listOfTasks = controllerTask.getOverdueTasks(id);
+        listOfTasks = controllerTask.getOverdueTasks(userId);
         if (listOfTasks.size() != 0) {
             System.out.println("Your overdue observable tasks: ");
             for (Task task : listOfTasks) {
@@ -126,16 +150,23 @@ public class SearchTasks {
         int num;
         do {
             System.out.print("Enter number of task or enter 0 for exit: ");
-            num = sc.nextInt();
-            --num;
+            try {
+                num = Integer.parseInt(sc.nextLine());
+                --num;
+            }
+            catch (NumberFormatException ex){
+                num = -1;
+            }
             if (num >= 0 && num < listOfTasks.size()) {
                 tasks.add(listOfTasks.get(num));
             } else if (num != -1) {
                 System.out.println("Incorrect number. Try again");
             }
         } while (num != -1);
-        controllerTask.unfollowTask(tasks, userId);
-        System.out.println("You unfollowing of tasks successfully");
+        if (tasks.size() > 0) {
+            controllerTask.unfollowTask(tasks, userId);
+            System.out.println("You unfollowing of tasks successfully");
+        }
     }
 
 }

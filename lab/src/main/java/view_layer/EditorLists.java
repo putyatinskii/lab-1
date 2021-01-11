@@ -13,47 +13,51 @@ public class EditorLists {
     private EditorListsOfTasks editorListsOfTasks = new EditorListsOfTasks();
     private ControllerListOfTasks controllerListOfTasks = new ControllerListOfTasks();
     private ControllerTasksInList controllerTasksInList = new ControllerTasksInList();
-    private int userId;
+    private static int userId;
     private ArrayList<ListOfTasks> namesOfTasks;
 
-    public void ListsOfTasksMenu(int userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public void ListsOfTasksMenu() {
         Scanner sc = new Scanner(System.in);
         showLists();
-        int res;
+        editorListsOfTasks.setUserId(userId);
+        String res;
         int num;
         do {
             System.out.println("Press 1 for select some list");
             System.out.println("Press 2 for create new list");
             System.out.println("Press 3 for refresh lists of tasks");
             System.out.println("Press 0 for exit");
-            res = sc.nextInt();
+            res = sc.nextLine();
             switch (res) {
-                case 1:
+                case "1":
                     num = selectList();
                     if (num != -1) {
-                        editorListsOfTasks.ListsOfTasksMenu(userId, namesOfTasks.get(num).getId());
-                        res = -1;
+                        editorListsOfTasks.ListsOfTasksMenu(namesOfTasks.get(num).getId());
+                        res = "-1";
                     }
                     else {
                         System.out.println("Incorrect number");
                     }
                     break;
-                case 2:
-                    editorListsOfTasks.ListsOfTasksMenu(userId, createList());
+                case "2":
+                    editorListsOfTasks.ListsOfTasksMenu(createList());
                     break;
-                case 3:
+                case "3":
                     showLists();
                     break;
-                case 0:
-                    res = -1;
+                case "0":
+                    res = "-1";
                     break;
                 default:
-                    res = -10;
+                    res = "-10";
                     System.out.println("incorrect value. Try again");
                     break;
             }
-        } while (res != -1);
+        } while (res != "-1");
         System.out.println("Return in MainMenu");
     }
 
@@ -77,8 +81,13 @@ public class EditorLists {
             int num;
             do {
                 System.out.print("Enter number of list: ");
-                num = sc.nextInt();
-                --num;
+                try {
+                    num = Integer.parseInt(sc.nextLine());
+                    --num;
+                }
+                catch (NumberFormatException ex){
+                    num = -1;
+                }
                 if (num >= 0 && num < namesOfTasks.size()) {
                     System.out.println("You select list");
                     return num;

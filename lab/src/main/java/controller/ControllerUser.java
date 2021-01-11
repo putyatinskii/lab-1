@@ -12,9 +12,9 @@ import org.apache.commons.codec.digest.DigestUtils;
 import java.util.ArrayList;
 
 public class ControllerUser {
-    UserLogic userLogic = new UserLogic();
-    WatcherForTaskLogic watcherForTaskLogic = new WatcherForTaskLogic();
-    TasksInListsLogic tasksInListsLogic = new TasksInListsLogic();
+    private UserLogic userLogic = new UserLogic();
+    private WatcherForTaskLogic watcherForTaskLogic = new WatcherForTaskLogic();
+    private TasksInListsLogic tasksInListsLogic = new TasksInListsLogic();
 
     public int trySignUp(User user) {
         return userLogic.trySignUp(user);

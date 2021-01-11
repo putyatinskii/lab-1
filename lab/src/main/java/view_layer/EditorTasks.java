@@ -15,44 +15,45 @@ import java.util.Scanner;
 public class EditorTasks {
     private ControllerTask controllerTask = new ControllerTask();
     private ControllerTasksInList controllerTasksInList = new ControllerTasksInList();
-    private int userId;
+    private static int userId;
     private ArrayList<Task> tasks;
 
     public void setUserId(int userId) {
         this.userId = userId;
     }
 
-    public void editTasksMenu(int userId) {
-        this.userId = userId;
+    public void editTasksMenu() {
         int taskId = -1;
         Scanner sc = new Scanner(System.in);
         System.out.println("Your tasks: ");
         showMyTasks();
-        System.out.println("Select a task from the list");
-        taskId = selectTask();
-        int res;
-        do {
-            System.out.println("Press 1 for remove task");
-            System.out.println("Press 2 for update task");
-            System.out.println("Press 0 for exit");
-            res = sc.nextInt();
-            switch (res) {
-                case 1:
-                    removeTask(taskId);
-                    break;
-                case 2:
-                    updateTask(taskId);
-                    break;
-                case 0:
-                    res = -1;
-                    break;
-                default:
-                    res = -10;
-                    System.out.println("incorrect value. Try again");
-                    break;
-            }
-        } while (res != -1);
-        System.out.println("Return in MainMenu");
+        if (tasks.size() != 0) {
+            System.out.println("Select a task from the list");
+            taskId = selectTask();
+            String res;
+            do {
+                System.out.println("Press 1 for remove task");
+                System.out.println("Press 2 for update task");
+                System.out.println("Press 0 for exit");
+                res = sc.nextLine();
+                switch (res) {
+                    case "1":
+                        removeTask(taskId);
+                        break;
+                    case "2":
+                        updateTask(taskId);
+                        break;
+                    case "0":
+                        res = "-1";
+                        break;
+                    default:
+                        res = "-10";
+                        System.out.println("incorrect value. Try again");
+                        break;
+                }
+            } while (res != "-1");
+            System.out.println("Return in MainMenu");
+        }
     }
 
     public int createTask() {
@@ -95,26 +96,26 @@ public class EditorTasks {
         System.out.println("Press 3 for change expiration date");
         System.out.println("Press 0 for exit");
         Task task = controllerTask.getTaskById(taskId);
-        int res;
+        String res;
         do {
-            res = sc.nextInt();
-            sc.nextLine();
+            res = sc.nextLine();
+            //sc.nextLine();
             switch (res) {
-                case 1:
+                case "1":
                     System.out.print("Enter new name: ");
                     String name = sc.nextLine();
                     task.setName(name);
                     if (!task.getName().equals(name))
                         System.out.println("Incorrect name");
                     break;
-                case 2:
+                case "2":
                     System.out.print("Enter new description: ");
                     String description = sc.nextLine();
                     task.setDescription(description);
                     if (!task.getDescription().equals(description))
                         System.out.println("Incorrect description");
                     break;
-                case 3:
+                case "3":
                     System.out.print("Enter expiration date (format date: 2000-12-12): ");
                     String date = sc.nextLine();
                     System.out.print("Enter expiration time (format time: 12:00:00): ");
@@ -129,15 +130,15 @@ public class EditorTasks {
                     if (!task.getAlert_time().equals(dateWithTime))
                         System.out.println("Incorrect Date and time");
                     break;
-                case 0:
-                    res = -1;
+                case "0":
+                    res = "-1";
                     break;
                 default:
-                    res = -10;
+                    res = "-10";
                     System.out.println("incorrect value. Try again");
                     break;
             }
-        } while (res != -1);
+        } while (res != "-1");
         controllerTask.updateTask(task);
         System.out.println("Task updated successful");
     }
@@ -167,8 +168,13 @@ public class EditorTasks {
         int taskId = -1;
         do {
             System.out.print("Enter number of task: ");
-            num = sc.nextInt();
-            --num;
+            try {
+                num = Integer.parseInt(sc.nextLine());
+                --num;
+            }
+            catch (NumberFormatException ex){
+                num = -1;
+            }
             if (num >= 0 && num < tasks.size()) {
                 taskId = tasks.get(num).getId();
             } else {
@@ -179,8 +185,7 @@ public class EditorTasks {
         return taskId;
     }
 
-    public void getOverdueMyTasks(int userId) {
-        this.userId = userId;
+    public void getOverdueMyTasks() {
         int i = 0;
         tasks = controllerTasksInList.getOverdueTasks(userId);
         if (tasks.size() != 0) {
@@ -211,8 +216,10 @@ public class EditorTasks {
                 System.out.println("Incorrect number. Try again");
             }
         } while (num != -1);
-        controllerTask.closingTasks(closingtasks);
-        System.out.println("tasks closed successfully");
+        if (closingtasks.size() > 0) {
+            controllerTask.closingTasks(closingtasks);
+            System.out.println("tasks closed successfully");
+        }
     }
 
 }

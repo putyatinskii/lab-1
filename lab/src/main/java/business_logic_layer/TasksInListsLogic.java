@@ -15,9 +15,9 @@ public class TasksInListsLogic {
     static final Logger LOGGER = Logger.getLogger(UserLogic.class);
     static final String PATH = "lab/src/main/resources/log4j.properties";
 
-    TasksInListsDAO tasksInListsDAO = new TasksInListsDAO();
-    ListOfTasksDAO listOfTasksDAO = new ListOfTasksDAO();
-    TaskDAO taskDAO = new TaskDAO();
+    private TasksInListsDAO tasksInListsDAO = new TasksInListsDAO();
+    private ListOfTasksDAO listOfTasksDAO = new ListOfTasksDAO();
+    private TaskDAO taskDAO = new TaskDAO();
 
     public void addTask(int listId, int userId, int taskId) {
         tasksInListsDAO.add(listId, userId, taskId);

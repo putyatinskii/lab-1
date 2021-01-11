@@ -10,9 +10,9 @@ import java.util.ArrayList;
 
 public class ControllerTask {
 
-    TaskLogic taskLogic = new TaskLogic();
-    WatcherForTaskLogic watcherForTaskLogic = new WatcherForTaskLogic();
-    TasksInListsLogic tasksInListsLogic = new TasksInListsLogic();
+    private TaskLogic taskLogic = new TaskLogic();
+    private WatcherForTaskLogic watcherForTaskLogic = new WatcherForTaskLogic();
+    private TasksInListsLogic tasksInListsLogic = new TasksInListsLogic();
 
     public ArrayList<Task> searchTaskByName(String name) {
         return taskLogic.searchTaskByName(name);

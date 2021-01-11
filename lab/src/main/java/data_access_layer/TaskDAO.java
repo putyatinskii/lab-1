@@ -126,4 +126,27 @@ public class TaskDAO implements DAO<Task> {
         }
         return null;
     }
+
+    public ArrayList<Task> searchByDescription(String description) {
+        try (Connection con = DataBase.connectDB()) {
+            ArrayList<Task> listOfTasks= new ArrayList<>();
+            Statement statement = con.createStatement();
+            String sqlCommand = "SELECT * FROM \"Tasks\" WHERE description LIKE '%" + description + "%'";
+            ResultSet resultSet = statement.executeQuery(sqlCommand);
+            while(resultSet.next()) {
+                listOfTasks.add(new Task(resultSet.getInt(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getTimestamp(4).toLocalDateTime().withNano(0),
+                        resultSet.getBoolean(5)));
+            }
+            return listOfTasks;
+
+        } catch (SQLException throwables) {
+            LOGGER.error(throwables.getMessage());
+        } catch (ClassNotFoundException e) {
+            LOGGER.error(e.getMessage());
+        }
+        return null;
+    }
 }
